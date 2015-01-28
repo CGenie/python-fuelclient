@@ -43,7 +43,7 @@ substitutions = {
 
 def group(*args, **kwargs):
     required = kwargs.get("required", False)
-    return (required, ) + args
+    return (required,) + args
 
 
 class TaskAction(argparse.Action):
@@ -146,8 +146,7 @@ def get_fuel_version_arg():
 
 
 def get_arg(name, flags=None, aliases=None, help_=None, **kwargs):
-    if "_" in name:
-        name = name.replace("_", "-")
+    name = name.replace("_", "-")
     args = ["--" + name, ]
     if flags is not None:
         args.extend(flags)
@@ -393,5 +392,36 @@ def get_plugin_install_arg(help_msg):
     return get_str_arg(
         "install",
         flags=("--install",),
+        help=help_msg
+    )
+
+
+def get_notify_message_arg(help_msg):
+    return get_str_arg(
+        "send", nargs='+',
+        flags=('-m',),
+        help=help_msg,
+    )
+
+
+def get_notify_send_arg(help_msg):
+    return get_str_arg(
+        "send",
+        flags=("--send",),
+        help=help_msg
+    )
+
+
+def get_notify_topic_arg(help_msg):
+    return get_str_arg(
+        "topic",
+        flags=("--topic",),
+        choices=(
+            'discover',
+            'done',
+            'error',
+            'warning',
+            'release'
+        ),
         help=help_msg
     )
